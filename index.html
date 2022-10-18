@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <input type="text" placeholder="search..." />
+    <div><a href="games.html">Game Page</a></div>
+    <div id="root"></div>
+  </body>
+  <script>
+    function displayData() {
+      fetch("https://www.balldontlie.io/api/v1/players")
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          //   console.log("data:", data.data)
+          const pdata = data.data;
+          displayItem(pdata);
+        })
+
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    displayData();
+
+    function displayItem(pdata) {
+      console.log("pdata...:", pdata);
+      //innerHTML is make sure empty before ReArrenging
+      document.querySelector("#root").innerHTML = "";
+
+      pdata.map(function (item) {
+        var img = document.createElement("img");
+        img.setAttribute(
+          "src",
+          "https://tse3.mm.bing.net/th?id=OIP.KGs0xdGXGSk4qiX2CeAYHAHaHa&pid=Api&P=0"
+        );
+
+        var h1 = document.createElement("h1");
+        h1.textContent = item.first_name;
+
+        var h3 = document.createElement("h3");
+        h3.textContent = "Position : " + item.position;
+
+        var btn = document.createElement("button");
+        btn.setAttribute("id", "itenAddButton");
+        btn.textContent = "Details";
+        btn.addEventListener("click", function () {
+          showDetails(item);
+        });
+
+        var divPush = document.createElement("div");
+        divPush.setAttribute("class", "divPush");
+
+        divPush.append(img, h1, h3, btn);
+
+        document.querySelector("#root").append(divPush);
+      });
+    }
+
+    function showDetails(item) {
+      window.location.href = "games.html";
+    }
+  </script>
+</html>
