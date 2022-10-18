@@ -8,11 +8,33 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <input type="text" placeholder="search..." />
+    <input
+      onchange="getSearch(this)"
+      type="text"
+      id="tbuser"
+      placeholder="search..."
+    />
+    <input type="button" id="btn1" value="search" />
+
     <div><a href="games.html">Game Page</a></div>
+    <div id="popup"></div>
     <div id="root"></div>
   </body>
   <script>
+    const searchData = document.getElementById("tbuser").value;
+    console.log(searchData, "SearchData");
+
+    function getSearch(input) {
+      fetch(`https://www.balldontlie.io/api/v1/players/${input.value}`)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log("data:", data.first_name);
+        });
+      //   console.log("SEARch...", input.value);
+    }
+
     function displayData() {
       fetch("https://www.balldontlie.io/api/v1/players")
         .then((res) => {
@@ -65,7 +87,21 @@
     }
 
     function showDetails(item) {
-      window.location.href = "games.html";
+      var h1 = document.createElement("h3");
+      h1.textContent = "Team Name : " + item.name;
+      var h2 = document.createElement("h3");
+      h2.textContent = "Abbreviation of the Team : " + item.team.abbreviation;
+      var h3 = document.createElement("h3");
+      h3.textContent = "Conference : " + item.team.conference;
+      var h4 = document.createElement("h3");
+      h4.textContent = "Division : " + item.team.division;
+      var h5 = document.createElement("h3");
+      h5.textContent = "City : " + item.team.city;
+      document.querySelector("#popup").innerHTML = "";
+      document.querySelector("#popup").append(h1, h2, h3, h4, h5);
+
+      console.log("click::", item.team.abbreviation);
+      //   window.location.href = "games.html";
     }
   </script>
 </html>
